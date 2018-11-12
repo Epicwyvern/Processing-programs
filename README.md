@@ -1,2 +1,2 @@
-# ReadMore
-A program akin to a book log. Made in Processing
+# Welcome
+These are all of the worthwile programs i have made.
