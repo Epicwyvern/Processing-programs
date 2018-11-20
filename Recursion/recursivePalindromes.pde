@@ -1,10 +1,10 @@
 class RecursivePalindromesCalculator {
 
-  String text;
-  String reverse;
-  String textFinal;
-  String reverseFinal;
-  boolean palindrome;
+
+
+
+
+
 
 
   RecursivePalindromesCalculator() {
@@ -15,12 +15,13 @@ class RecursivePalindromesCalculator {
   boolean checkPalindrome (String  text) {    
 
     text = new String(text.toCharArray());
-    reverse = new String(reverse(text.toCharArray())); 
+    String reverse = new String(reverse(text.toCharArray())); 
 
 
-    textFinal= new String(text.replaceAll("[^A-Z]", "").toLowerCase());
-    reverseFinal= new String(reverse.replaceAll("[^A-Z]", "").toLowerCase());
+    String textFinal= new String(text.replaceAll("[^A-Z]", "").toLowerCase());
+    String reverseFinal= new String(reverse.replaceAll("[^A-Z]", "").toLowerCase());
 
+    boolean palindrome=false;
 
 
     if (textFinal.length()==1 || textFinal.length()==0) {
@@ -39,14 +40,7 @@ class RecursivePalindromesCalculator {
       }
     }
 
-
-    return palindrome;
-  }
-
-
-
-  void printOut() { 
-
     println(palindrome);
+    return palindrome;
   }
 }
