@@ -1,7 +1,7 @@
 /**
  * Common pitfalls of Recursion
  *
- * 1. recursive methods must follow a specific order to function (, 
+ * 1. recursive methods must follow a specific order to function (Correct order: Check, Mark, Recurse), 
  * otherwise they wont work. ( can not call recursive at the start).
  * 
  * 2. The stack increases with each recursive call, and can cause stack crashes and overflow errors if 
