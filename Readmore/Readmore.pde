@@ -75,11 +75,11 @@ void setup () {
   cp5 = new ControlP5(this);
   cp5s2 = new ControlP5(this);
   cp5s3 = new ControlP5(this);
-  
+
   bookmarkPages = loadStrings("bookmarkpage.txt"); 
   bookmarkTitles = loadStrings("bookmarktitle.txt");
   bookmarkAuthors = loadStrings("bookmarkauthor.txt");
-  
+
   colorPicker = cp5s2.addColorPicker("picker")
     .setPosition(width/2.3, height/2.5)
     .setColorValue(color(0, 0, 0, 255))
@@ -91,16 +91,16 @@ void setup () {
 
 
   cp5.addTextfield("Book Title")
-    .setPosition(width/5.647058824+70, height/2)
+    .setPosition(width/6, height/2)
     .setSize(600, 80)
     .setFont(font2)
     .setFocus(true)
     .setColor(color(255))
     .hide()
     ;
-    
-   cp5.addTextfield("Author Name")
-    .setPosition(width/5.647058824+70, height/1.4)
+
+  cp5.addTextfield("Author Name")
+    .setPosition(width/6, height/1.6)
     .setSize(600, 80)
     .setFont(font2)
     .setFocus(true)
@@ -110,7 +110,7 @@ void setup () {
 
 
   cp5.addTextfield("Page Number")
-    .setPosition(width/1.5+70, height/2)
+    .setPosition(width/2, height/1.8)
     .setSize(200, 80)
     .setFont(font2)
     .setFocus(true)
@@ -118,41 +118,41 @@ void setup () {
     .setInputFilter(ControlP5.INTEGER)
     .hide()
     ;
-    
-    
 
-    cp5s3.addScrollableList("Bookmark Pages")
-     .setPosition(width/2.23255814, height/3.176470588)
-     .setSize(200, 400)
-     .setFont(font3)
-     .setBarHeight(20)
-     .setItemHeight(50)
-     .addItems(bookmarkPages)
-     .setType(ControlP5.LIST)
-     .hide()
-     ;
-     
-    cp5s3.addScrollableList("Bookmark Titles")
-     .setPosition(width/2.953846154, height/3.176470588)
-     .setSize(200, 400)
-     .setFont(font3)
-     .setBarHeight(20)
-     .setItemHeight(50)
-     .addItems(bookmarkTitles)
-     .setType(ControlP5.LIST)
-     .hide()
-     ;
-     
-    cp5s3.addScrollableList("Bookmark Authors")
-     .setPosition(width/1.794392523, height/3.176470588)
-     .setSize(200, 400)
-     .setFont(font3)
-     .setBarHeight(20)
-     .setItemHeight(50)
-     .addItems(bookmarkAuthors)
-     .setType(ControlP5.LIST)
-     .hide()
-     ;
+
+
+  cp5s3.addScrollableList("Bookmark Pages")
+    .setPosition(width/2.23255814, height/3.176470588)
+    .setSize(200, 400)
+    .setFont(font3)
+    .setBarHeight(20)
+    .setItemHeight(50)
+    .addItems(bookmarkPages)
+    .setType(ControlP5.LIST)
+    .hide()
+    ;
+
+  cp5s3.addScrollableList("Bookmark Titles")
+    .setPosition(width/2.953846154, height/3.176470588)
+    .setSize(200, 400)
+    .setFont(font3)
+    .setBarHeight(20)
+    .setItemHeight(50)
+    .addItems(bookmarkTitles)
+    .setType(ControlP5.LIST)
+    .hide()
+    ;
+
+  cp5s3.addScrollableList("Bookmark Authors")
+    .setPosition(width/1.794392523, height/3.176470588)
+    .setSize(200, 400)
+    .setFont(font3)
+    .setBarHeight(20)
+    .setItemHeight(50)
+    .addItems(bookmarkAuthors)
+    .setType(ControlP5.LIST)
+    .hide()
+    ;
 
 
 
@@ -510,12 +510,12 @@ void addBookmarks () {
 }
 
 void viewBookmarks () {
-  
-image(scroll,width/3.764705882,height/21.6);
-  
-cp5s3.get(ScrollableList.class, "Bookmark Pages").show();
-cp5s3.get(ScrollableList.class, "Bookmark Titles").show();
-cp5s3.get(ScrollableList.class, "Bookmark Authors").show();
+
+  image(scroll, width/3.764705882, height/21.6);
+
+  cp5s3.get(ScrollableList.class, "Bookmark Pages").show();
+  cp5s3.get(ScrollableList.class, "Bookmark Titles").show();
+  cp5s3.get(ScrollableList.class, "Bookmark Authors").show();
 }
 
 
@@ -676,23 +676,47 @@ void mouseReleased () {
   if (bookmarkState==2 && mouseX > width/2.2 && mouseX < width/2.2+175 && mouseY > height/1.2 && mouseY <height/1.2+100 && settingsState==0 && infoState==0 && logState==0) {
 
 
+
+
     newestBookmarkTitle=cp5.get(Textfield.class, "Book Title").getText();
     newestBookmarkPage=cp5.get(Textfield.class, "Page Number").getText();
     newestBookmarkAuthor=cp5.get(Textfield.class, "Author Name").getText();
-    
-    bookmarkPages = append(bookmarkPages, newestBookmarkPage);
-    bookmarkTitles =  append(bookmarkTitles, newestBookmarkTitle);
-    bookmarkAuthors =  append(bookmarkAuthors, newestBookmarkAuthor);
-    
-    saveStrings(dataPath("bookmarkpage.txt"), bookmarkPages);
-    saveStrings(dataPath("bookmarktitle.txt"), bookmarkTitles);
-    saveStrings(dataPath("bookmarkauthor.txt"), bookmarkAuthors);
 
-    cp5.get(Textfield.class, "Book Title").clear();
-    cp5.get(Textfield.class, "Page Number").clear();
-    cp5.get(Textfield.class, "Author Name").clear();
 
-    bookmarkState=1;
-    cp5.hide();
+    if (newestBookmarkTitle != null && !newestBookmarkTitle.isEmpty() && newestBookmarkPage != null && !newestBookmarkPage.isEmpty() && newestBookmarkAuthor != null && !newestBookmarkTitle.isEmpty()) {
+
+
+
+      bookmarkPages = append(bookmarkPages, newestBookmarkPage);
+      bookmarkTitles =  append(bookmarkTitles, newestBookmarkTitle);
+      bookmarkAuthors =  append(bookmarkAuthors, newestBookmarkAuthor);
+
+
+
+      saveStrings(dataPath("bookmarkpage.txt"), bookmarkPages);
+      saveStrings(dataPath("bookmarktitle.txt"), bookmarkTitles);
+      saveStrings(dataPath("bookmarkauthor.txt"), bookmarkAuthors);
+
+      cp5s3.get(ScrollableList.class, "Bookmark Pages").clear();
+      cp5s3.get(ScrollableList.class, "Bookmark Authors").clear();
+      cp5s3.get(ScrollableList.class, "Bookmark Titles").clear();
+   
+      cp5s3.get(ScrollableList.class, "Bookmark Pages").addItems(bookmarkPages);
+      cp5s3.get(ScrollableList.class, "Bookmark Titles").addItems(bookmarkTitles);
+      cp5s3.get(ScrollableList.class, "Bookmark Authors").addItems(bookmarkAuthors);
+
+
+      cp5.get(Textfield.class, "Book Title").clear();
+      cp5.get(Textfield.class, "Page Number").clear();
+      cp5.get(Textfield.class, "Author Name").clear();
+
+      bookmarkState=1;
+      cp5.hide();
+    }
+
+    else  {
+
+      println("nothing is in the fields");
+    }
   }
 }
