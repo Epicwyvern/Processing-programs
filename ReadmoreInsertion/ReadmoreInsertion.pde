@@ -726,70 +726,60 @@ void mouseReleased () {
 
     cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").clear(); 
 
-    String infilename = "data/bookmark.txt";
-    String outfilename = "data/bookmark_pagesort.txt";    
-    Table table = loadTable(infilename, "csv");
 
-    boolean swap = true;
+    int i;
+    int j;
     String temp;
 
-    while (swap==true) {
 
-      swap = false;
 
-      for (int i = 0; i < bookmarks.length-1; i++) {    
-
-        bookmarks[i] = bookmarks[i].replaceAll("[^0-9.]", "");
-
-        if (int(bookmarks[i]) > int(bookmarks[i+1])) {
-          temp = bookmarks[i];
-          bookmarks[i] = bookmarks[i+1];
-          bookmarks[i+1] = temp;                   
-          swap = true;
-        }
-      }
+for (i = 0; i < bookmarks.length; i++){
+  
+  bookmarks[i] = bookmarks[i].replaceAll("[^0-9.]", "");
+  
+    for (j = i; j > 0 && int(bookmarks[j-1]) > int(bookmarks[j]); j--){
+        temp = bookmarks[j];
+        bookmarks[j] = bookmarks[j-1];
+        bookmarks[j-1] = temp;
     }
+}
 
-
-    
-    saveTable(table, outfilename, "csv");
 
 
     cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").addItems(bookmarks);
-
   }
 
+  //  if ( bookmarkState==3 && mouseX > width/1.4 && mouseX < width/1.4+175 && mouseY > height/2.649056604 && mouseY < height/2.649056604+100) {
 
-  if ( bookmarkState==3 && mouseX > width/1.4 && mouseX < width/1.4+175 && mouseY > height/2.649056604 && mouseY < height/2.649056604+100) {
-
-    cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").clear(); 
-
-
-    String infilename = "data/bookmark.txt";
-    String outfilename = "data/bookmark_titlesort.txt";    
-    Table table = loadTable(infilename, "csv");
-
-    table.sort(0);
-    saveTable(table, outfilename, "csv");
+  //    cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").clear(); 
 
 
-    cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").addItems(bookmarksTitleSort);
-  }
+  //    String infilename = "data/bookmark.txt";
+  //    String outfilename = "data/bookmark_titlesort.txt";    
+  //    Table table = loadTable(infilename, "csv");
+
+  //    table.sort(0);
+  //    saveTable(table, outfilename, "csv");
 
 
-  if ( bookmarkState==3 && mouseX > width/1.4 && mouseX < width/1.4+175 && mouseY > height/1.77721519 && mouseY < height/1.77721519+100) {
-
-    cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").clear();    
-
-    String infilename = "data/bookmark.txt"; 
-    String outfilename = "data/bookmark_authorsort.txt";    
-    Table table = loadTable(infilename, "csv");
-
-    table.sort(1);
-    saveTable(table, outfilename, "csv");
+  //    cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").addItems(bookmarksTitleSort);
+  //  }
 
 
+  //  if ( bookmarkState==3 && mouseX > width/1.4 && mouseX < width/1.4+175 && mouseY > height/1.77721519 && mouseY < height/1.77721519+100) {
 
-    cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").addItems(bookmarksAuthorSort);
-  }
+  //    cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").clear();    
+
+  //    String infilename = "data/bookmark.txt"; 
+  //    String outfilename = "data/bookmark_authorsort.txt";    
+  //    Table table = loadTable(infilename, "csv");
+
+  //    table.sort(1);
+  //    saveTable(table, outfilename, "csv");
+
+
+
+  //    cp5s3.get(ScrollableList.class, "(Bookmark Title, Bookmark Author, Bookmark Page)").addItems(bookmarksAuthorSort);
+  //  }
+  //}
 }
