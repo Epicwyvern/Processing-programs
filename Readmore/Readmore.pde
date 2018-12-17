@@ -9,10 +9,13 @@ String [] bookmarks;
 String [] bookmarksTitleSort;
 String [] bookmarksAuthorSort;
 String [] bookmarksPageSort;
+String [] bookmarkSections = {"0", "Title", "Author", "Page"};
 
 
 String newestBookmark;
-
+String bookmarkSection;
+int bookmarkSectionIndex;
+int bookmarkSectionMultiplier;
 
 PImage background;
 PImage title;
@@ -44,8 +47,11 @@ PImage bookmarkSortTitle;
 PImage bookmarkSortAuthor;
 PImage search;
 PImage newestFirst;
+PImage deleteBookmark;
+PImage editBookmark;
 
 PFont font;
+PFont font4;
 
 float titleTransparency;
 float buttonSpeed;
@@ -75,10 +81,14 @@ boolean newest;
 void settings () {
 
 
+
   fullScreen(P2D);
 }
 
 void setup () {
+
+  font = createFont ("font.ttf", 50);
+  font4 = createFont("font.ttf", 35);
 
   PFont font2 = createFont("font.ttf", 50);
   PFont font3 = createFont("times.ttf", 20);
@@ -91,6 +101,10 @@ void setup () {
   bookmarksTitleSort = loadStrings("bookmark_titlesort.txt");
   bookmarksAuthorSort = loadStrings("bookmark_authorsort.txt");
   bookmarksPageSort = loadStrings("bookmark_pagesort.txt");
+
+  bookmarkSection = join(bookmarks, ",");
+  bookmarkSectionMultiplier = 1;
+
 
 
   colorPicker = cp5s2.addColorPicker("picker")
@@ -212,8 +226,8 @@ void setup () {
   bookmarkSortAuthor = loadImage("bookmarksortauthor.png");
   search =  loadImage("search.png");
   newestFirst = loadImage("newestfirst.png");
-
-  font = createFont ("font.ttf", 50);
+  deleteBookmark = loadImage("deletebookmark.png");
+  editBookmark = loadImage("editbookmark.png");
 
   bookmarkState = 0;
   logState = 0;
@@ -246,6 +260,7 @@ void draw () {
   if (borders==true) {
     border();
   }
+
 
 
   textAlign(LEFT);
@@ -541,6 +556,23 @@ void addBookmarks () {
 }
 
 
+void Title_Author_Page (int n) {
+
+
+
+  bookmarkSectionIndex = n;
+  bookmarkSectionMultiplier=3*bookmarkSectionIndex;
+
+  for (int i = 0; i < bookmarkSection.length(); i=i+3) {
+
+    bookmarkSections = split(bookmarkSection, ",");
+  }
+
+  bookmarkSectionIndex = n;
+}
+
+
+
 void viewBookmarks () {
 
   image(scroll, width/3.764705882, height/21.6);
@@ -550,21 +582,26 @@ void viewBookmarks () {
   image(bookmarkSortAuthor, width/1.15, height/1.77721519);
   image(search, width/1.627118644, height/3+20, 50, 50);
   image(newestFirst, width/1.4, height/5.2);
+  image(deleteBookmark, width/38.4, height/1.77721519);
+  image(editBookmark, width/6.981818182, height/1.77721519);
 
 
   cp5s3.get(ScrollableList.class, "Title_Author_Page").show();
   cp5s3.get(Textfield.class, "").show();
+
+  textFont(font4);
+
+  text("Title: " + bookmarkSections[bookmarkSectionMultiplier], 50, 300);
+  text("Author: " + bookmarkSections[bookmarkSectionMultiplier+1], 50, 400);
+  text("Page Number: " + bookmarkSections[bookmarkSectionMultiplier+2], 50, 500);
 }
 
 
-void Title_Author_Page (String n) {
 
-  println(n);
 
-  for (int i = 0; i < bookmarks.length; i++) {
 
-  }
-}
+
+
 
 
 
@@ -838,5 +875,34 @@ void mouseReleased () {
     }
     cp5s3.get(ScrollableList.class, "Title_Author_Page").clear();
     cp5s3.get(ScrollableList.class, "Title_Author_Page").addItems(bookmarks);
+  }
+
+
+  if (bookmarkState==3 && mouseX > width/38.4 && mouseX < width/38.4+175 && mouseY > height/1.77721519 && mouseY < height/1.77721519+100) {
+
+    if (bookmarkSectionIndex>=0) {
+
+
+      cp5s3.get(ScrollableList.class, "Title_Author_Page").clear();
+
+      String infilename = "data/bookmark.txt"; 
+      String outfilename = "data/bookmark.txt";    
+      Table table = loadTable(infilename, "csv");
+
+
+      table.removeRow(bookmarkSectionIndex);
+      saveTable(table, outfilename, "csv");
+
+
+      bookmarks = loadStrings("bookmark.txt");  
+      cp5s3.get(ScrollableList.class, "Title_Author_Page").addItems(bookmarks);
+
+     
+
+      Title_Author_Page (bookmarkSectionIndex);
+      viewBookmarks ();
+
+      bookmarkSectionIndex=-1;
+    }
   }
 }
