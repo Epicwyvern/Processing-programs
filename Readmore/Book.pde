@@ -8,11 +8,19 @@
  * This is a class used for books                         
  *
  */
- 
- class Book {
 
- }
+abstract class Book {
+  String Title;
+  String Author;
+  int dateStarted;
+  int monthStarted;
+  int yearStarted;
  
- 
- 
- 
+  Book(String Title, String Author, int dateStarted, int monthStarted, int yearStarted) {
+    this.Title = Title;
+    this.Author = Author;
+    this.dateStarted = dateStarted;
+    this.monthStarted = monthStarted;
+    this.yearStarted = yearStarted;
+  }
+} 

@@ -1,9 +1,14 @@
 import controlP5.*;
 
 
+FinishedBook books =  new FinishedBook ("a","a",1,1,1,1,1,1);
+Book books1 = new Book("a","a",1,1,1);
+
+
 ControlP5 cp5;
 ControlP5 cp5s2;
 ControlP5 cp5s3;
+ControlP5 cp5s4;
 
 String [] bookmarks;
 String [] bookmarksTitleSort;
@@ -15,7 +20,10 @@ String [] bookmarkSections = {"0", "Title", "Author", "Page"};
 String newestBookmark;
 String bookmarkSection;
 int bookmarkSectionIndex;
-int bookmarkSectionMultiplier;
+
+
+String selectedBookmark;
+String [] bookmarkList;
 
 PImage background;
 PImage title;
@@ -49,6 +57,11 @@ PImage search;
 PImage newestFirst;
 PImage deleteBookmark;
 PImage editBookmark;
+PImage editBookmarksTitle; 
+PImage divider;
+PImage booksTitle;
+PImage addBooks;
+PImage manageBooks;
 
 PFont font;
 PFont font4;
@@ -92,19 +105,24 @@ void setup () {
 
   PFont font2 = createFont("font.ttf", 50);
   PFont font3 = createFont("times.ttf", 20);
+  PFont font5 = createFont("font.ttf", 30);
+
 
   cp5 = new ControlP5(this);
   cp5s2 = new ControlP5(this);
   cp5s3 = new ControlP5(this);
+  cp5s4 = new ControlP5(this);
 
   bookmarks = loadStrings("bookmark.txt"); 
   bookmarksTitleSort = loadStrings("bookmark_titlesort.txt");
   bookmarksAuthorSort = loadStrings("bookmark_authorsort.txt");
   bookmarksPageSort = loadStrings("bookmark_pagesort.txt");
 
-  bookmarkSection = join(bookmarks, ",");
-  bookmarkSectionMultiplier = 1;
 
+  bookmarkSectionIndex = -1;
+  bookmarkSection = join(bookmarks, ",");
+  selectedBookmark = null;
+  bookmarkList = null;
 
 
   colorPicker = cp5s2.addColorPicker("picker")
@@ -127,6 +145,7 @@ void setup () {
     .hide()
     ;
   cp5.getController("Book Title").getCaptionLabel().setColor(color(0, 0, 0));
+
 
   cp5.addTextfield("Author Name")
     .setPosition(width/6, height/1.5)
@@ -151,8 +170,6 @@ void setup () {
     .hide()
     ;
   cp5.getController("Page Number").getCaptionLabel().setColor(color(0, 0, 0));
-
-
 
 
   cp5s3.addScrollableList("Title_Author_Page")
@@ -184,6 +201,40 @@ void setup () {
   cp5s3.getController("").getCaptionLabel().setColor(color(0, 0, 0));
 
 
+  cp5s4.addTextfield("New Book Title")
+    .setPosition(width/2.35, height/2.5)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(600, 80)
+    .setFont(font5)
+    .setFocus(true)
+    .hide()
+    ;
+  cp5s4.getController("New Book Title").getCaptionLabel().setColor(color(0, 0, 0));
+
+  cp5s4.addTextfield("New Author Name")
+    .setPosition(width/2.35, height/1.7)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(600, 80)
+    .setFont(font5)
+    .setFocus(true)
+    .hide()
+    ;
+  cp5s4.getController("New Author Name").getCaptionLabel().setColor(color(0, 0, 0));
+
+
+  cp5s4.addTextfield("New Page Number")
+    .setPosition(width/1.25, height/2.0)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(200, 80)
+    .setFont(font5)
+    .setFocus(true)
+    .setInputFilter(ControlP5.INTEGER)
+    .hide()
+    ;
+  cp5s4.getController("New Page Number").getCaptionLabel().setColor(color(0, 0, 0));
 
 
 
@@ -228,6 +279,11 @@ void setup () {
   newestFirst = loadImage("newestfirst.png");
   deleteBookmark = loadImage("deletebookmark.png");
   editBookmark = loadImage("editbookmark.png");
+  editBookmarksTitle = loadImage("editbookmarktitle.png");
+  divider = loadImage("divider.png");
+  booksTitle = loadImage("booktitle.png");
+  addBooks = loadImage("addbook.png");
+  manageBooks = loadImage("managebooks.png");
 
   bookmarkState = 0;
   logState = 0;
@@ -305,6 +361,19 @@ void draw () {
     viewBookmarks();
     return2Menu();
   }
+
+  if (bookmarkState==4) {
+    editBookmarks();
+    return3Menu();
+  }
+  
+  
+  if (logState==1) {
+    logScreen();    
+  }   
+    
+  
+  
 }
 
 
@@ -424,6 +493,21 @@ void returnMenu() {
 
 
 void return2Menu() {
+
+  image(returnMenu, width/38.4, height/21.6, 70, 70);
+
+
+
+  if (mouseX > width/38.4 && mouseX < width/38.4+70 && mouseY > height/21.6 && mouseY < height/21.6+70) {
+    fill(colorPicker.getColorValue());
+    textFont(font);
+    text("Click here to return to the previous menu", 20, height-40);
+  }
+}
+
+
+
+void return3Menu() {
 
   image(returnMenu, width/38.4, height/21.6, 70, 70);
 
@@ -558,17 +642,10 @@ void addBookmarks () {
 
 void Title_Author_Page (int n) {
 
+  bookmarkSectionIndex=n;
 
-
-  bookmarkSectionIndex = n;
-  bookmarkSectionMultiplier=3*bookmarkSectionIndex;
-
-  for (int i = 0; i < bookmarkSection.length(); i=i+3) {
-
-    bookmarkSections = split(bookmarkSection, ",");
-  }
-
-  bookmarkSectionIndex = n;
+  selectedBookmark = cp5s3.get(ScrollableList.class, "Title_Author_Page").getItem(n).get("name").toString();
+  bookmarkList = split(selectedBookmark, ",");
 }
 
 
@@ -591,18 +668,51 @@ void viewBookmarks () {
 
   textFont(font4);
 
-  text("Title: " + bookmarkSections[bookmarkSectionMultiplier], 50, 300);
-  text("Author: " + bookmarkSections[bookmarkSectionMultiplier+1], 50, 400);
-  text("Page Number: " + bookmarkSections[bookmarkSectionMultiplier+2], 50, 500);
+  if (selectedBookmark != null) {
+    text("Title: " + bookmarkList[0], 50, 300);
+    text("Author: " + bookmarkList[1], 50, 400);
+    text("Page Number: " + bookmarkList[2], 50, 500);
+  }
 }
 
 
 
 
+void editBookmarks () {
+
+  image(saveBookmarks, width/2.2, height/1.2);
+  image(editBookmarksTitle, width/3.764705882, height/99.5);
+  image(divider, width/4+50, height/2.5);
+
+  cp5s4.get(Textfield.class, "New Book Title").show();
+  cp5s4.get(Textfield.class, "New Page Number").show();
+  cp5s4.get(Textfield.class, "New Author Name").show();
+
+  textFont(font);
+
+  text("Current Bookmark", width/15, height/2-170);
+  text("New Bookmark", width/2.35, height/2-170);
+
+
+  textFont(font4);
+
+
+  if (bookmarkSectionIndex>=0) {
+    text("Title: " + bookmarkList[0], width/10, height/2-70);
+    text("Author: " + bookmarkList[1], width/10, height/2+30);
+    text("Page Number: " + bookmarkList[2], width/10, height/2+130);
+  }
+}
 
 
 
+void logScreen() {
 
+  image(booksTitle,width/3.764705882-40, height/9);
+  image(addBooks, width/5.647058824+70, height/2);
+  image(manageBooks, width/1.5+70, height/2);
+  
+}
 
 
 
@@ -679,6 +789,26 @@ void mouseReleased () {
   }
 
 
+
+
+  if (bookmarkState==4) {
+
+    if (mouseX > width/38.4 && mouseX < width/38.4+70 && mouseY > height/21.6 && mouseY < height/21.6+70) {
+
+      bookmarkSectionIndex=-1;
+      
+      infoState=0;
+      logState=0;
+      bookmarkState=3;
+      settingsState=0;
+
+      cp5s4.get(Textfield.class, "New Book Title").clear();
+      cp5s4.get(Textfield.class, "New Page Number").clear();
+      cp5s4.get(Textfield.class, "New Author Name").clear();
+
+      cp5s4.hide();
+    }
+  }
 
 
 
@@ -841,7 +971,7 @@ void mouseReleased () {
   }
 
 
-  if (bookmarkState==3 && mouseX > width/1.627118644 && mouseX < width/1.627118644+100 && mouseY > height/3+20 && mouseY < height/3+20+100) {
+  if (bookmarkState==3 && mouseX > width/1.627118644 && mouseX < width/1.627118644+100 && mouseY > height/3+20 && mouseY < height/3+20+100 || key == ENTER) {
 
 
     cp5s3.get(ScrollableList.class, "Title_Author_Page").clear();
@@ -897,12 +1027,92 @@ void mouseReleased () {
       bookmarks = loadStrings("bookmark.txt");  
       cp5s3.get(ScrollableList.class, "Title_Author_Page").addItems(bookmarks);
 
-     
 
-      Title_Author_Page (bookmarkSectionIndex);
-      viewBookmarks ();
 
       bookmarkSectionIndex=-1;
+    }
+  }
+
+
+  if (bookmarkState==3 && mouseX > width/6.981818182 && mouseX < width/6.981818182+175 && mouseY > height/1.77721519 && mouseY < height/1.77721519+100  && bookmarkSectionIndex>=0) {
+
+    bookmarkState=4;
+
+    cp5s3.get(ScrollableList.class, "Title_Author_Page").clear();
+    cp5s3.get(ScrollableList.class, "Title_Author_Page").addItems(bookmarks);
+    cp5s3.get(ScrollableList.class, "Title_Author_Page").hide();
+
+    cp5s3.get(Textfield.class, "").clear();
+    cp5s3.get(Textfield.class, "").hide();
+    
+    
+
+    cp5s4.show();
+  } 
+
+
+
+
+  if (bookmarkState==4 && mouseX > width/2.2 && mouseX < width/2.2+175 && mouseY > height/1.2 && mouseY <height/1.2+100 && settingsState==0 && infoState==0 && logState==0) {
+
+    boolean newCheck = false;
+
+
+    newestBookmark=(cp5s4.get(Textfield.class, "New Book Title").getText() + "," + cp5s4.get(Textfield.class, "New Author Name").getText() + "," +  nf(int(cp5s4.get(Textfield.class, "New Page Number").getText()), 3));
+
+
+
+    if (cp5s4.get(Textfield.class, "New Book Title").getText() != null && !cp5s4.get(Textfield.class, "New Book Title").getText().isEmpty() && cp5s4.get(Textfield.class, "New Author Name").getText() != null && !cp5s4.get(Textfield.class, "New Author Name").getText().isEmpty() && cp5s4.get(Textfield.class, "New Page Number").getText() != null && !cp5s4.get(Textfield.class, "New Page Number").getText().isEmpty()) {
+
+
+      bookmarks = append(bookmarks, newestBookmark);
+
+
+      saveStrings(dataPath("bookmark.txt"), bookmarks);
+
+
+
+      cp5s3.get(ScrollableList.class, "Title_Author_Page").addItem(newestBookmark, 1);
+
+      cp5s4.get(Textfield.class, "New Book Title").clear();
+      cp5s4.get(Textfield.class, "New Page Number").clear();
+      cp5s4.get(Textfield.class, "New Author Name").clear();
+
+      newCheck=true;
+    } else {   
+      bookmarkState=4;
+    }
+
+
+    if (bookmarkSectionIndex>=0 && newCheck==true) {
+
+
+      cp5s3.get(ScrollableList.class, "Title_Author_Page").clear();
+
+      String infilename = "data/bookmark.txt"; 
+      String outfilename = "data/bookmark.txt";    
+      Table table = loadTable(infilename, "csv");
+
+
+      table.removeRow(bookmarkSectionIndex);
+      saveTable(table, outfilename, "csv");
+
+
+      bookmarks = loadStrings("bookmark.txt");  
+      cp5s3.get(ScrollableList.class, "Title_Author_Page").addItems(bookmarks);
+
+
+
+      bookmarkSectionIndex = -1;
+      newCheck=false;
+
+
+      cp5s4.get(Textfield.class, "New Book Title").clear();
+      cp5s4.get(Textfield.class, "New Page Number").clear();
+      cp5s4.get(Textfield.class, "New Author Name").clear();
+      cp5s4.hide();
+
+      bookmarkState=3;
     }
   }
 }
