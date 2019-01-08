@@ -5,7 +5,7 @@ ControlP5 cp5s2;
 ControlP5 cp5s3;
 ControlP5 cp5s4;
 ControlP5 cp5s5;
-
+ControlP5 cp5s6;
 
 String [] bookmarks;
 String [] bookmarksTitleSort;
@@ -21,6 +21,10 @@ int bookmarkSectionIndex;
 
 String selectedBookmark;
 String [] bookmarkList;
+
+
+
+String [] books;
 
 PImage background;
 PImage title;
@@ -92,7 +96,7 @@ void settings () {
 
 
 
-  fullScreen(P2D);
+  fullScreen();
 }
 
 void setup () {
@@ -110,6 +114,8 @@ void setup () {
   cp5s3 = new ControlP5(this);
   cp5s4 = new ControlP5(this);
   cp5s5 = new ControlP5(this);
+  cp5s6 = new ControlP5(this);
+
 
   bookmarks = loadStrings("bookmark.txt"); 
   bookmarksTitleSort = loadStrings("bookmark_titlesort.txt");
@@ -122,6 +128,8 @@ void setup () {
   selectedBookmark = null;
   bookmarkList = null;
 
+
+  books = loadStrings("books.txt"); 
 
   colorPicker = cp5s2.addColorPicker("picker")
     .setPosition(width/2.3, height/2.5)
@@ -236,10 +244,56 @@ void setup () {
 
 
 
+  cp5s5.addTextfield("Title")
+    .setPosition(width/6, height/2)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(600, 80)
+    .setFont(font2)
+    .setFocus(true)
+    .hide()
+    ;
+  cp5s5.getController("Title").getCaptionLabel().setColor(color(0, 0, 0));
 
 
+  cp5s5.addTextfield("Authors Name")
+    .setPosition(width/6, height/1.5)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(600, 80)
+    .setFont(font2)
+    .setFocus(true)
+    .hide()
+    ;
+  cp5s5.getController("Authors Name").getCaptionLabel().setColor(color(0, 0, 0));
 
 
+  cp5s6.addScrollableList("Title_Author_DateStarted")
+    .setPosition(width/2.925, height/2.2)
+    .setColorBackground(#DFB760)
+    .setColorForeground(#B5882B)
+    .setColorActive(#B5882B)
+    .setSize(600, 400)
+    .setFont(font3)
+    .setBarHeight(50)
+    .setItemHeight(50)
+   // .addItems(books)
+    .setType(ControlP5.LIST)
+    .hide()
+    .getCaptionLabel().toUpperCase(false) 
+    ;
+  cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").getValueLabel().toUpperCase(false);
+
+  cp5s6.addTextfield("")
+    .setPosition(width/2.925, height/3)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(500, 80)
+    .setFont(font2)
+    .setFocus(true)
+    .hide()
+    ;
+  cp5s6.getController("").getCaptionLabel().setColor(color(0, 0, 0));
 
 
 
@@ -370,6 +424,16 @@ void draw () {
     logScreen();    
   }   
     
+  if (logState==2) {
+    return2Menu();
+    addBooksScreen();    
+  }  
+  
+  if (logState==3) {
+    return2Menu();
+    viewBooksScreen();    
+  } 
+  
   
   
 }
@@ -714,6 +778,53 @@ void logScreen() {
 
 
 
+void addBooksScreen() {
+
+  image(saveBookmarks, width/2.2, height/1.2);
+  image(addBookmarksTitle, width/3.764705882, height/10.5);
+ 
+  cp5s5.show();
+
+
+  textAlign(CENTER);
+  fill(colorPicker.getColorValue());
+  text("Each field must contain data to save books", width/2, height/2.5);
+  textAlign(LEFT);
+}
+
+
+
+void viewBooksScreen() {
+  
+  image(scroll, width/3.764705882, height/21.6);
+  image(viewBookmarksTitle, width/2.612244898, height/5.2, viewBookmarksTitle.width/2, viewBookmarksTitle.height/2);
+  image(bookmarkSortPage, width/1.15, height/5.2);
+  image(bookmarkSortTitle, width/1.15, height/2.649056604);
+  image(bookmarkSortAuthor, width/1.15, height/1.77721519);
+  image(search, width/1.627118644, height/3+20, 50, 50);
+  image(newestFirst, width/1.4, height/5.2);
+  image(deleteBookmark, width/38.4, height/1.77721519);
+  image(editBookmark, width/6.981818182, height/1.77721519);
+
+
+  cp5s6.show();
+  
+
+  textFont(font4);
+
+  if (selectedBookmark != null) {
+    text("Title: " + bookmarkList[0], 50, 300);
+    text("Author: " + bookmarkList[1], 50, 400);
+    text("Page Number: " + bookmarkList[2], 50, 500);
+  }  
+  
+  
+}
+
+
+
+
+
 void mouseReleased () {
 
   if (buttonSpeed<=height/2) {
@@ -754,10 +865,15 @@ void mouseReleased () {
   }
 
 
-  if (logState==2 ) {
+  if (logState==2 || logState==3) {
+   
 
     if (mouseX > width/38.4 && mouseX < width/38.4+70 && mouseY > height/21.6 && mouseY < height/21.6+70) {
 
+      cp5s5.hide();
+      cp5s6.get(Textfield.class, "").hide();
+      cp5s6.hide();
+      
       infoState=0;
       logState=1;
       bookmarkState=0;
@@ -1113,4 +1229,37 @@ void mouseReleased () {
       bookmarkState=3;
     }
   }
+  
+  
+  
+  
+  if (logState==1 && mouseX > width/5.647058824+70 && mouseX < width/5.647058824+70+175 && mouseY > height/2 && mouseY <height/2+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
+
+    logState=2;
+    cp5s5.show();
+    cp5s5.get(Textfield.class, "Title").show();
+    cp5s5.get(Textfield.class, "Authors Name").show();
+    
+  } 
+  
+ if (logState==1 && logState!=3 && mouseX > width/1.5+70 && mouseX < width/1.5+70+175 && mouseY > height/2 && mouseY <height/2+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
+
+   println(10);
+   
+    logState=3;
+    cp5s6.show();
+    cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").show();
+    cp5s6.get(Textfield.class, "").show();
+    
+  } 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
