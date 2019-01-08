@@ -1,14 +1,11 @@
 import controlP5.*;
 
-
-FinishedBook books =  new FinishedBook ("a","a",1,1,1,1,1,1);
-Book books1 = new Book("a","a",1,1,1);
-
-
 ControlP5 cp5;
 ControlP5 cp5s2;
 ControlP5 cp5s3;
 ControlP5 cp5s4;
+ControlP5 cp5s5;
+
 
 String [] bookmarks;
 String [] bookmarksTitleSort;
@@ -112,6 +109,7 @@ void setup () {
   cp5s2 = new ControlP5(this);
   cp5s3 = new ControlP5(this);
   cp5s4 = new ControlP5(this);
+  cp5s5 = new ControlP5(this);
 
   bookmarks = loadStrings("bookmark.txt"); 
   bookmarksTitleSort = loadStrings("bookmark_titlesort.txt");

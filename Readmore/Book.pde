@@ -9,7 +9,7 @@
  *
  */
 
-abstract class Book {
+class Book {
   String Title;
   String Author;
   int dateStarted;
