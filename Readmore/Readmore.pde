@@ -189,7 +189,7 @@ void setup () {
 
 
   cp5s3.addScrollableList("Title_Author_Page")
-    .setPosition(width/2.925, height/2.2)
+    .setPosition(width/2.925, height/2.2-50)
     .setColorBackground(#DFB760)
     .setColorForeground(#B5882B)
     .setColorActive(#B5882B)
@@ -314,7 +314,7 @@ void setup () {
   cp5s5.getController("Year Started").getCaptionLabel().setColor(color(0, 0, 0));
 
 
-  cp5s6.addScrollableList("Title_Author_DateStarted")
+  cp5s6.addScrollableList("Title_Author_DateStarted_DateFinsihed")
     .setPosition(width/2.925, height/2.2)
     .setColorBackground(#DFB760)
     .setColorForeground(#B5882B)
@@ -328,7 +328,7 @@ void setup () {
     .hide()
     .getCaptionLabel().toUpperCase(false) 
     ;
-  cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").getValueLabel().toUpperCase(false);
+  cp5s6.get(ScrollableList.class, "Title_Author_DateStarted_DateFinsihed").getValueLabel().toUpperCase(false);
 
   cp5s6.addTextfield("")
     .setPosition(width/2.925, height/3)
@@ -885,7 +885,8 @@ void mouseReleased () {
     }
 
 
-    if (mouseX > width/2.37037037+25 && mouseX < width/2.37037037+250 && mouseY > height/2+25 && mouseY < height/2+250 && bookmarkState==0 && infoState==0 && settingsState==0) {
+    if (mouseX > width/2.37037037+25 && mouseX < width/2.37037037+250 && mouseY > height/2+25 && mouseY < height/2+250 && bookmarkState==0 && infoState==0 && settingsState==0 && logState!=2 && logState!=3) {
+
       logState=1;
     }
 
@@ -1286,6 +1287,7 @@ void mouseReleased () {
 
   if (logState==1 && mouseX > width/5.647058824+70 && mouseX < width/5.647058824+70+175 && mouseY > height/2 && mouseY <height/2+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
 
+
     logState=2;
     cp5s5.show();
     cp5s5.get(Textfield.class, "Title").show();
@@ -1295,13 +1297,11 @@ void mouseReleased () {
     cp5s5.get(Textfield.class, "Year Started").show();
   } 
 
-  if (logState==1 && logState!=3 && mouseX > width/1.5+70 && mouseX < width/1.5+70+175 && mouseY > height/2 && mouseY <height/2+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
-
-    println(10);
+  if (logState==1 && logState!=3 && logState!=2 && mouseX > width/1.5+70 && mouseX < width/1.5+70+175 && mouseY > height/2 && mouseY <height/2+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
 
     logState=3;
     cp5s6.show();
-    cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").show();
+    cp5s6.get(ScrollableList.class, "Title_Author_DateStarted_DateFinsihed").show();
     cp5s6.get(Textfield.class, "").show();
   }
 }
