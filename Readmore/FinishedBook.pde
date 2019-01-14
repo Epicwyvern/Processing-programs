@@ -21,10 +21,4 @@ class FinishedBook extends Book {
     this.monthFinished = monthFinished;
     this.yearFinished = yearFinished;
   }
-
-
-
-String toString() {
-    return super.toString() + ", " + this.dateFinished + "," + this.monthFinished + "," + this.yearFinished;
-  }
 }

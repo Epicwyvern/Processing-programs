@@ -10,15 +10,15 @@
  */
 
 class Book {
-  String Title;
-  String Author;
+  String title;
+  String author;
   int dateStarted;
   int monthStarted;
   int yearStarted;
  
-  Book(String Title, String Author, int dateStarted, int monthStarted, int yearStarted) {
-    this.Title = Title;
-    this.Author = Author;
+  Book(String title, String author, int dateStarted, int monthStarted, int yearStarted) {
+    this.title = title;
+    this.author = author;
     this.dateStarted = dateStarted;
     this.monthStarted = monthStarted;
     this.yearStarted = yearStarted;
