@@ -8,6 +8,7 @@ ControlP5 cp5s4;
 ControlP5 cp5s5;
 ControlP5 cp5s6;
 ControlP5 cp5s6b;
+ControlP5 cp5s6c;
 ControlP5 cp5s7;
 
 String [] bookmarks;
@@ -164,6 +165,7 @@ void setup () {
   cp5s5 = new ControlP5(this);
   cp5s6 = new ControlP5(this);
   cp5s6b = new ControlP5(this);
+  cp5s6c = new ControlP5(this);
   cp5s7 = new ControlP5(this);
 
 
@@ -467,6 +469,55 @@ void setup () {
 
 
 
+
+
+
+
+  cp5s6c.addTextfield("Date Finished")
+    .setPosition(width/2.4, height/2)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(200, 80)
+    .setFont(font5)
+    .setFocus(true)
+    .setInputFilter(ControlP5.INTEGER)
+    .hide()
+    ;
+  cp5s6c.getController("Date Finished").getCaptionLabel().setColor(color(0, 0, 0));
+
+
+  cp5s6c.addTextfield("Month Finished")
+    .setPosition(width/1.7, height/2.0)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(200, 80)
+    .setFont(font5)
+    .setFocus(true)
+    .setInputFilter(ControlP5.INTEGER)
+    .hide()
+    ;
+  cp5s6c.getController("Month Finished").getCaptionLabel().setColor(color(0, 0, 0));
+
+
+  cp5s6c.addTextfield("Year Finished")
+    .setPosition(width/1.25-30, height/2)
+    .setColorBackground(#B5882B)
+    .setColor(#000000)
+    .setSize(200, 80)
+    .setFont(font5)
+    .setFocus(true)
+    .setInputFilter(ControlP5.INTEGER)
+    .hide()
+    ;
+  cp5s6c.getController("Year Finished").getCaptionLabel().setColor(color(0, 0, 0));
+
+
+
+
+
+
+
+
   cp5s7.addScrollableList("Title_Author_DateStarted_DateFinished")
     .setPosition(width/2.925, height/2.2-50)
     .setColorBackground(#DFB760)
@@ -476,7 +527,7 @@ void setup () {
     .setFont(font3)
     .setBarHeight(50)
     .setItemHeight(50)
-    .addItems(bookStrings)
+    //.addItems(finishedBooksLog)
     .setType(ControlP5.LIST)
     .hide()
     .getCaptionLabel().toUpperCase(false) 
@@ -653,9 +704,13 @@ void draw () {
     return3Menu();
     editBooks();
   }
-
-
+  
   if (logState==5) {
+    return3Menu();
+    markComplete();
+  }
+
+  if (logState==6) {
     return2Menu();
     viewFinishedBooks();
   }
@@ -1072,7 +1127,7 @@ void viewFinishedBooks() {
 
 void editBooks () {
 
-  image(saveBookmarks, width/2.2, height/1.2);
+  image(saveBook, width/2.2, height/1.2);
   image(editBookTitle, width/3.764705882, height/99.5);
   image(divider, width/4+50, height/2.5);
 
@@ -1101,6 +1156,40 @@ void editBooks () {
 
 
 
+void markComplete () {
+  
+  image(saveBook, width/2.2, height/1.2);
+  image(editBookTitle, width/3.764705882, height/99.5);
+  image(divider, width/4+50, height/2.5);
+
+  cp5s6c.get(Textfield.class, "Date Finished").show();
+  cp5s6c.get(Textfield.class, "Month Finished").show();
+  cp5s6c.get(Textfield.class, "Year Finished").show();
+
+
+
+  textFont(font);
+
+  text("Current Book", width/15, height/2-170);
+  text("Completion Date", width/2.35, height/2-170);
+
+
+  textFont(font4);
+
+
+  if (bookSectionIndex>=0) {
+    text("Title: " + bookList[0], width/10, height/2-70);
+    text("Author: " + bookList[1], width/10, height/2+30);
+    text("Date Started: " + bookList[2], width/10, height/2+130);
+  }
+  
+  
+  
+  
+}
+
+
+
 
 
 
@@ -1110,17 +1199,17 @@ void editBooks () {
 
 void mouseReleased () {
 
-  
+
   //--------------------------------------------------------------------------------------------------------------
   //Below: main menu buttons only active if slow startup animation is complete ( already complete in fast startup)
   //--------------------------------------------------------------------------------------------------------------
-  
-  
+
+
   if (buttonSpeed<=height/2) {
-    
-  //------------------------------------------------------------------------------
-  //Below: takes the user to the bookmarks screen from the main menu (in main menu)
-  //------------------------------------------------------------------------------   
+
+    //------------------------------------------------------------------------------
+    //Below: takes the user to the bookmarks screen from the main menu (in main menu)
+    //------------------------------------------------------------------------------   
 
 
     if (mouseX > width/1.5+25 && mouseX < width/1.5+250 && mouseY > height/2+25 && mouseY < height/2+250 && logState==0 && infoState==0 && settingsState==0 && bookmarkState==0) {
@@ -1130,10 +1219,10 @@ void mouseReleased () {
 
 
 
-  //---------------------------------------------------------------------------
-  //Below: takes the user to the books screen from the main menu (in main menu)
-  //---------------------------------------------------------------------------
-  
+    //---------------------------------------------------------------------------
+    //Below: takes the user to the books screen from the main menu (in main menu)
+    //---------------------------------------------------------------------------
+
 
     if (mouseX > width/2.37037037+25 && mouseX < width/2.37037037+250 && mouseY > height/2+25 && mouseY < height/2+250 && bookmarkState==0 && infoState==0 && settingsState==0 && logState<=0) {
 
@@ -1142,10 +1231,10 @@ void mouseReleased () {
 
 
 
-  //--------------------------------------------------------------------------
-  //Below: takes the user to the info screen from the main menu (in main menu)
-  //--------------------------------------------------------------------------
-  
+    //--------------------------------------------------------------------------
+    //Below: takes the user to the info screen from the main menu (in main menu)
+    //--------------------------------------------------------------------------
+
 
     if (mouseX > width/5.647058824+25 && mouseX < width/5.647058824+250 && mouseY > height/2+25 && mouseY < height/2+250 && bookmarkState==0 && logState==0 && settingsState==0) {
       infoState=1;
@@ -1154,9 +1243,9 @@ void mouseReleased () {
 
 
 
-  //------------------------------------------------------------------------------
-  //Below: takes the user to the settings screen from the main menu (in main menu)
-  //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    //Below: takes the user to the settings screen from the main menu (in main menu)
+    //------------------------------------------------------------------------------
 
 
     if (mouseX > width/1.2 && mouseX < width/1.2+421 && mouseY > 0 && mouseY < 324 && bookmarkState==0 && infoState==0 && logState==0) {
@@ -1167,9 +1256,9 @@ void mouseReleased () {
 
 
 
-  //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //Below: returns the user to the main menu from the books screen, the bookmarks screen, the info screen or the settings screen ( in all state 1 screens, to the main menu)
-  //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //Below: returns the user to the main menu from the books screen, the bookmarks screen, the info screen or the settings screen ( in all state 1 screens, to the main menu)
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
     if (infoState==1 || bookmarkState==1 || logState==1 || settingsState==1) {
@@ -1342,10 +1431,10 @@ void mouseReleased () {
 
     borders=false;
   }  
-  
-  
-  
-  
+
+
+
+
   //---------------------------------------
   //Below: toggles borders on (in settings)
   //---------------------------------------
@@ -1375,9 +1464,9 @@ void mouseReleased () {
 
 
 
-  //-----------------------------------------------------------------------------------------------------------------------------------------
-  //Below: returns the user to the settings screen from the color picker screen (in colopicker, in settings), and saves the new color changes
-  //-----------------------------------------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------
+  //Below: resets the text color to black (default color) (in colopicker, in settings)
+  //----------------------------------------------------------------------------------
 
 
   if (settingsState==2 && mouseX > width/5.647058824+70 && mouseX < width/5.647058824+70+175 && mouseY > height/1.2 && mouseY <height/1.2+100 && bookmarkState==0 && infoState==0 && logState==0) {
@@ -1387,13 +1476,12 @@ void mouseReleased () {
 
 
 
-  //----------------------------------------------------------------------------------------------------------------------------------------
-  //Below: returns the user to the settings screen from the color picker screen (in colopicker, in settings), without applying color changes
-  //----------------------------------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------------------------------------
+  //Below: returns the user to the settings screen from the color picker screen (in colopicker, in settings), applying all color changes
+  //------------------------------------------------------------------------------------------------------------------------------------
 
 
   if (settingsState==2 && mouseX > width/1.5+70 && mouseX < width/1.5+70+175 && mouseY > height/1.2 && mouseY <height/1.2+100 && bookmarkState==0 && infoState==0 && logState==0) {
-
     settingsState=1;
     colorPicker.hide();
   } 
@@ -1493,14 +1581,14 @@ void mouseReleased () {
     bookmarksPageSort = loadStrings("bookmark_pagesort.txt");
     cp5s3.get(ScrollableList.class, "Title_Author_Page").addItems(bookmarksPageSort);
   }
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
   //------------------------------------------------------------------------------------------------------------
   //Below: sorts the bookmarks by the title name and updates the bookmark log ( in view bookmarks, in bookmarks)
   //------------------------------------------------------------------------------------------------------------
@@ -1523,12 +1611,12 @@ void mouseReleased () {
     bookmarksTitleSort = loadStrings("bookmark_titlesort.txt");
     cp5s3.get(ScrollableList.class, "Title_Author_Page").addItems(bookmarksTitleSort);
   }
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
   //-------------------------------------------------------------------------------------------------------------
   //Below: sorts the bookmarks by the author name and updates the bookmark log ( in view bookmarks, in bookmarks)
@@ -1583,10 +1671,10 @@ void mouseReleased () {
       }
     }
   }
-  
-  
-  
-  
+
+
+
+
   //---------------------------------------------------------------------------------
   //Below: sorts bookmarks by the newest bookmarks ( in view bookmarks, in bookmarks)
   //---------------------------------------------------------------------------------
@@ -1734,8 +1822,8 @@ void mouseReleased () {
       bookmarkState=3;
     }
   }
-  
-  
+
+
 
   //-------------------------------------------------------------------------
   //Below: takes the user into the "add a book" page from the view books page
@@ -1778,7 +1866,7 @@ void mouseReleased () {
 
   if (logState==1 && logState!=3 && logState!=2 && mouseX > width/1.5+70 && mouseX < width/1.5+70+175 && mouseY > height/2 && mouseY <height/2+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
 
-    logState=5;
+    logState=6;
     cp5s7.show();
     cp5s7.get(ScrollableList.class, "Title_Author_DateStarted_DateFinished").show();
     cp5s7.get(Textfield.class, "").show();
@@ -2007,7 +2095,7 @@ void mouseReleased () {
 
 
   if (logState==4 && mouseX > width/2.2 && mouseX < width/2.2+175 && mouseY > height/1.2 && mouseY <height/1.2+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
-    
+
     boolean newCheck = false;
 
     newestBook= new Book (cp5s6b.get(Textfield.class, "New Title").getText(), cp5s6b.get(Textfield.class, "New Authors Name").getText(), int(cp5s6b.get(Textfield.class, "New Date Started").getText()), int(cp5s6b.get(Textfield.class, "New Month Started").getText()), int(cp5s6b.get(Textfield.class, "New Year Started").getText()));
@@ -2071,39 +2159,109 @@ void mouseReleased () {
       cp5s6b.get(Textfield.class, "New Month Started").clear();
       cp5s6b.get(Textfield.class, "New Year Started").clear();
       cp5s6b.hide();
- 
+
       cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").show();
       cp5s6.get(Textfield.class, "").show();
       logState=3;
     }
   }
-  
-  
-  
+
+
+
   //------------------------------------------------------------------------------------------------------------------------------
   //Below: If on edit screen, provides functionality for the return button back to the book viewer (in edit book, in manage Books)
   //------------------------------------------------------------------------------------------------------------------------------
-  
 
-  
+
+
   if (logState==4 && mouseX > width/38.4 && mouseX < width/38.4+70 && mouseY > height/21.6 && mouseY < height/21.6+70) {
 
-      bookSectionIndex=-1;
+    bookSectionIndex=-1;
 
-      infoState=0;
-      logState=3;
-      bookmarkState=0;
-      settingsState=0;
+    infoState=0;
+    logState=3;
+    bookmarkState=0;
+    settingsState=0;
 
-      cp5s6b.get(Textfield.class, "New Title").clear();
-      cp5s6b.get(Textfield.class, "New Authors Name").clear();
-      cp5s6b.get(Textfield.class, "New Date Started").clear();
-      cp5s6b.get(Textfield.class, "New Month Started").clear();
-      cp5s6b.get(Textfield.class, "New Year Started").clear();
+    cp5s6b.get(Textfield.class, "New Title").clear();
+    cp5s6b.get(Textfield.class, "New Authors Name").clear();
+    cp5s6b.get(Textfield.class, "New Date Started").clear();
+    cp5s6b.get(Textfield.class, "New Month Started").clear();
+    cp5s6b.get(Textfield.class, "New Year Started").clear();
 
-      cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").show();
-      cp5s6.get(Textfield.class, "").show();
-      
-      cp5s6b.hide();
-    }
+    cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").show();
+    cp5s6.get(Textfield.class, "").show();
+
+    cp5s6b.hide();
+  }
+
+
+
+
+
+
+
+  //------------------------------------------------------------------------------------------------------------------------
+  //Below: takes the user to the mark complete screen from the bookmark log screen if a bookmark is selected ( in bookmarks)
+  //------------------------------------------------------------------------------------------------------------------------
+
+
+
+  if (bookSectionIndex>=0 && logState==3 && mouseX > width/38.4+110 && mouseX < width/38.4+110+175 && mouseY > height/1.77721519+150 && mouseY < height/1.77721519+150+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
+
+    
+    cp5s6.hide();
+    
+    logState=5;
+  }
+  
+  
+  
+  
+  //---------------------------------------------------------------------------------------------------------------------------------------
+  //Below: If on mark complete screen, provides functionality for the return button back to the book viewer (in edit book, in manage Books)
+  //---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+  if (logState==5 && mouseX > width/38.4 && mouseX < width/38.4+70 && mouseY > height/21.6 && mouseY < height/21.6+70) {
+
+    bookSectionIndex=-1;
+
+    infoState=0;
+    logState=3;
+    bookmarkState=0;
+    settingsState=0;
+
+    cp5s6c.get(Textfield.class, "Date Finished").clear();
+    cp5s6c.get(Textfield.class, "Month Finished").clear();
+    cp5s6c.get(Textfield.class, "Year Finished").clear();
+    
+    cp5s6c.hide();
+  
+  
+    cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").show();
+    cp5s6.get(Textfield.class, "").show();
+
+    cp5s6b.hide();
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
