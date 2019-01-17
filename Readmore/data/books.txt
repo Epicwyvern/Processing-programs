@@ -1,5 +1,3 @@
-May,Andrews,27/05/1955
-Alejandro,Bell,07/11/1997
 Dennis,Coleman,12/10/2054
 Lizzie,Holland,10/01/2062
 Charlotte,Jensen,09/06/1915
@@ -8,4 +6,3 @@ Chris,Osborne,03/09/1908
 Elnora,Porter,03/12/1933
 Charlotte,Stephens,14/08/1977
 Travis,Thompson,12/05/2070
-A,A,13/13/1313
