@@ -704,7 +704,7 @@ void draw () {
     return3Menu();
     editBooks();
   }
-  
+
   if (logState==5) {
     return3Menu();
     markComplete();
@@ -717,10 +717,25 @@ void draw () {
 }
 
 
+
+
+/**
+ * Background
+ *
+ * This is a function for the background image of the program.    
+ */
+
+
 void Background () {
   image(background, 0, 0, width, height);
 }
 
+
+/**
+ * Title
+ *
+ * This is a function for the main menu title of the program.    
+ */
 
 
 void Title () {
@@ -734,11 +749,25 @@ void Title () {
 }
 
 
+/**
+ * infoButton
+ *
+ * This is a function for the button that takes you to the info screen    
+ */
+
+
 void infoButton () {
 
   tint(255, buttonTransparency);
   image(info, width/5.647058824, buttonSpeed);
 }
+
+
+/**
+ * logButton
+ *
+ * This is a function for the button that takes you to the booklog screen    
+ */
 
 
 void logButton () {
@@ -748,11 +777,25 @@ void logButton () {
 }
 
 
+/**
+ * bookmarkButton
+ *
+ * This is a function for the button that takes you to the bookmarks screen    
+ */
+
+
 void bookmarkButton () {
 
   tint(255, buttonTransparency);
   image(bookmark, width/1.5, buttonSpeed);
 }
+
+
+/**
+ * menuInformation
+ *
+ * This is a function that controls text prompts on the munu screen, as well as the startup fade effect
+ */
 
 
 void menuInformation () {
@@ -803,6 +846,12 @@ void menuInformation () {
 }
 
 
+/**
+ * border
+ *
+ * This is a function used to draw the programs borders  
+ */
+
 
 void border () {
 
@@ -813,6 +862,13 @@ void border () {
   line(0, height, width, height);
   line(width, 0, width, height);
 }
+
+
+/**
+ * returnMenu
+ *
+ * This is a function that draws the return button to the main menu when necessary   
+ */
 
 
 void returnMenu() {
@@ -829,7 +885,11 @@ void returnMenu() {
 }
 
 
-
+/**
+ * return2Menu
+ *
+ * This is a function that draws the return button back to the first state screens when necessary   
+ */
 
 
 void return2Menu() {
@@ -846,6 +906,12 @@ void return2Menu() {
 }
 
 
+/**
+ * return3Menu
+ *
+ * This is a function that draws the return button back to the second state screens when necessary   
+ */
+
 
 void return3Menu() {
 
@@ -861,6 +927,12 @@ void return3Menu() {
 }
 
 
+
+/**
+ * infoScreen
+ *
+ * This is a function that displays the information screen when the particular switch is activated  
+ */
 
 void infoScreen () {
 
@@ -883,11 +955,23 @@ void infoScreen () {
 }
 
 
+/**
+ * settingsButton
+ *
+ * This is a function that displays the settings button that can be contrrolled via a switch  
+ */
+
 void settingsButton () {
 
   image(cog, width/1.2, 0);
 }
 
+
+/**
+ * settingsScreen
+ *
+ * This is a function that displays the settings screen when the particular switch is activated. 
+ */
 
 void settingsScreen() {
 
@@ -930,6 +1014,12 @@ void settingsScreen() {
 }
 
 
+/**
+ * textColorMenu
+ *
+ * This is a function that displays the text color selector when the switch is activated in the settings screen 
+ */
+
 void textColorMenu () {
 
   image(textColorTitle, width/3.764705882, height/19.5);
@@ -950,9 +1040,11 @@ void textColorMenu () {
 
 
 
-
-
-
+/**
+ * bookmarkScreen
+ *
+ * This is a function that displays the bookmarks hub when the switch is activated in the main menu 
+ */
 
 
 void bookmarkScreen () {
@@ -962,6 +1054,11 @@ void bookmarkScreen () {
   image(viewBookmarks, width/1.5+70, height/2);
 }
 
+/**
+ * addBookmarks
+ *
+ * This is a function that displays the add bookmarks page when the switch is activated in bookmarks hub 
+ */
 
 void addBookmarks () {
 
@@ -980,6 +1077,18 @@ void addBookmarks () {
 }
 
 
+/**
+ * Title_Authour_Page
+ *
+ * This is a special function that is used to communicate with the controlP5 scrollable list (in this case the bookmarks list)
+ *
+ *
+ *
+ * @param  n  The selected index entry of the scrollable list 
+ *
+ */
+
+
 void Title_Author_Page (int n) {
 
   bookmarkSectionIndex=n;
@@ -988,6 +1097,12 @@ void Title_Author_Page (int n) {
   bookmarkList = split(selectedBookmark, ",");
 }
 
+
+/**
+ * viewBookmarks
+ *
+ * This is a function that displays the bookmarks list and some actions you can take once the switch is activated in the bookmarks hub 
+ */
 
 
 void viewBookmarks () {
@@ -1016,6 +1131,12 @@ void viewBookmarks () {
 }
 
 
+
+/**
+ * editBookmarks
+ *
+ * This is a function that displays the edit bookmarks screen page when the switch is activated in the manage bookmarks page
+ */
 
 
 void editBookmarks () {
@@ -1046,6 +1167,12 @@ void editBookmarks () {
 
 
 
+/**
+ * logScreen
+ *
+ * This is a function that displays the booklog hub once the switch is activated in the main menu
+ */
+
 void logScreen() {
 
   image(booksTitle, width/3.764705882-40, height/9);
@@ -1055,6 +1182,11 @@ void logScreen() {
 }
 
 
+/**
+ * addBooksScreen
+ *
+ * This is a function that displays the add books page when the switch is activated in the booklog hub 
+ */
 
 void addBooksScreen() {
 
@@ -1070,6 +1202,18 @@ void addBooksScreen() {
 }
 
 
+
+/**
+ * Title_Authour_DateStarted
+ *
+ * This is a special function that is used to communicate with the controlP5 scrollable list (in this case the unfinished books list)
+ *
+ *
+ *
+ * @param  n  index of the selected entry of the scrollable list 
+ *
+ */
+
 void Title_Author_DateStarted (int n) {
 
   bookSectionIndex=n;
@@ -1078,6 +1222,12 @@ void Title_Author_DateStarted (int n) {
   bookList = split(selectedBook, ",");
 }
 
+/**
+ * viewBooksScreen
+ *
+ * This is a function that displays the view unfinished books screen once the switch is activated in the booklog hub
+ *
+ */
 
 
 void viewBooksScreen() {
@@ -1106,6 +1256,13 @@ void viewBooksScreen() {
 }
 
 
+/**
+ * viewFinishedBooks
+ *
+ * This is a function that displays the finished books log once the switch is activated in the booklog hub
+ */
+
+
 void viewFinishedBooks() {
 
   image(scroll, width/3.764705882, height/21.6);
@@ -1123,6 +1280,12 @@ void viewFinishedBooks() {
   cp5s7.show();
 }
 
+
+/**
+ * editBooks
+ *
+ * This is a function that displays the edit books screen once the switch is activated in the unfinished books log
+ */
 
 
 void editBooks () {
@@ -1156,8 +1319,16 @@ void editBooks () {
 
 
 
+/**
+ * markComplete
+ *
+ * This is a function that displays the mark compleye screen once the switch is activated in the unfinished books log
+ */
+
+
+
 void markComplete () {
-  
+
   image(saveBook, width/2.2, height/1.2);
   image(editBookTitle, width/3.764705882, height/99.5);
   image(divider, width/4+50, height/2.5);
@@ -1182,10 +1353,6 @@ void markComplete () {
     text("Author: " + bookList[1], width/10, height/2+30);
     text("Date Started: " + bookList[2], width/10, height/2+130);
   }
-  
-  
-  
-  
 }
 
 
@@ -2209,15 +2376,15 @@ void mouseReleased () {
 
   if (bookSectionIndex>=0 && logState==3 && mouseX > width/38.4+110 && mouseX < width/38.4+110+175 && mouseY > height/1.77721519+150 && mouseY < height/1.77721519+150+100 && settingsState==0 && infoState==0 && bookmarkState==0) {
 
-    
+
     cp5s6.hide();
-    
+
     logState=5;
   }
-  
-  
-  
-  
+
+
+
+
   //---------------------------------------------------------------------------------------------------------------------------------------
   //Below: If on mark complete screen, provides functionality for the return button back to the book viewer (in edit book, in manage Books)
   //---------------------------------------------------------------------------------------------------------------------------------------
@@ -2236,32 +2403,13 @@ void mouseReleased () {
     cp5s6c.get(Textfield.class, "Date Finished").clear();
     cp5s6c.get(Textfield.class, "Month Finished").clear();
     cp5s6c.get(Textfield.class, "Year Finished").clear();
-    
+
     cp5s6c.hide();
-  
-  
+
+
     cp5s6.get(ScrollableList.class, "Title_Author_DateStarted").show();
     cp5s6.get(Textfield.class, "").show();
 
     cp5s6b.hide();
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 }
