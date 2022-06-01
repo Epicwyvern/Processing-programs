@@ -1,4 +1,2 @@
 # Welcome
-These are all of the worthwile programs i have made.
-
-Currently coding in Processing/Java
+These are some basicprograms i have coded in Processing/Java.
